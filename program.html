@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Habit Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            background-color: #555;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .nav a:hover {
+            background-color: #777;
+        }
+        .months-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: space-between;
+        }
+        .month-card {
+            background: #333;
+            border-radius: 8px;
+            padding: 15px;
+            width: 23%;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+        .month-card h3 {
+            margin: 0 0 10px;
+            text-align: center;
+        }
+        .month-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .month-card ul li {
+            margin-bottom: 5px;
+        }
+        .month-card input[type="text"] {
+            width: calc(100% - 10px);
+            margin-top: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+        }
+        .month-card button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #555;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .month-card button:hover {
+            background-color: #777;
+        }
+        .chart-container {
+            margin: 30px 0;
+            background: #444;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #chart {
+            width: 100%;
+            height: 200px;
+        }
+        .analysis-container {
+            margin-top: 30px;
+            background: #444;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        .analysis-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .analysis-container th, .analysis-container td {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #555;
+        }
+        .analysis-container th {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Section -->
+        <div class="nav">
+            <a href="prog.html">Go to Weekly Task Bar</a>
+        </div>
+
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Monthly Habit Tracker</h1>
+        </div>
+
+        <!-- Monthly Habits Section -->
+        <div class="months-section" id="months-section"></div>
+
+        <!-- Chart Section -->
+        <div class="chart-container">
+            <h3>Habits Tracker Monthly View</h3>
+            <canvas id="chart"></canvas>
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="analysis-container">
+            <h3>Task Analysis</h3>
+            <div id="analysis"></div>
+        </div>
+    </div>
+
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function addTask(monthId) {
+    const taskInput = document.getElementById(`${monthId}-input`);
+    const taskValue = taskInput.value.trim();
+    
+    if (taskValue) {
+        // Add the task to the corresponding month's task list
+        const taskList = document.getElementById(`${monthId}-tasks`);
+        const taskItem = document.createElement("li");
+        taskItem.textContent = taskValue;
+        
+        // Create a checkbox to mark the task as completed
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.onclick = function() {
+            if (this.checked) {
+                taskCounts[monthId].completed++;
+            } else {
+                taskCounts[monthId].completed--;
+            }
+            updateTaskCount(monthId);
+            updateChart();
+        };
+        
+        taskItem.prepend(checkbox);
+        taskList.appendChild(taskItem);
+        
+        // Update total tasks count
+        taskCounts[monthId].total++;
+        updateTaskCount(monthId);
+        
+        // Clear the input field
+        taskInput.value = '';
+    }
+}
+
+function updateTaskCount(monthId) {
+    // Create a table to display the task analysis
+    const analysisDiv = document.getElementById("analysis");
+    analysisDiv.innerHTML = ''; // Clear previous content
+
+    // Create table headers
+    const table = document.createElement("table");
+    const headerRow = document.createElement("tr");
+    headerRow.innerHTML = `<th>Month</th><th>Completed Tasks</th><th>Total Tasks</th>`;
+    table.appendChild(headerRow);
+
+    // Populate the table with task counts
+    for (const month in taskCounts) {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${month.charAt(0).toUpperCase() + month.slice(1)}</td>
+                         <td>${taskCounts[month].completed}</td>
+                         <td>${taskCounts[month].total}</td>`;
+        table.appendChild(row);
+    }
+
+    // Append the table to the analysis div
+    analysisDiv.appendChild(table);
+}
+
+function updateChart() {
+    // Logic to update the chart with the new task counts
+    // This would involve using Chart.js to update the chart data and redraw it
+}
+        // Initialize task completion counts and total tasks
+        const taskCounts = {
+            january: { completed: 0, total: 0 },
+            february: { completed: 0, total: 0 },
+            march: { completed: 0, total: 0 },
+            april: { completed: 0, total: 0 },
+            may: { completed: 0, total: 0 },
+            june: { completed: 0, total: 0 },
+            july: { completed: 0, total: 0 },
+            august: { completed: 0, total: 0 },
+            september: { completed: 0, total: 0 },
+            october: { completed: 0, total: 0 },
+            november: { completed: 0, total: 0 },
+            december: { completed: 0, total: 0 }
+        };
+
+        // Generate month cards dynamically
+        function generateMonths() {
+            const months = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+
+            const monthsSection = document.getElementById("months-section");
+            months.forEach((month) => {
+                const monthId = month.toLowerCase();
+                const monthCard = document.createElement("div");
+                monthCard.classList.add("month-card");
+                monthCard.innerHTML = `
+                    <h3>${month}</h3>
+                    <ul id="${monthId}-tasks"></ul>
+                    <input type="text" id="${monthId}-input" placeholder="Add a task">
+                    <button onclick="addTask('${monthId}')">Add Task</button>
+                `;
+                monthsSection.appendChild(monthCard);
+            });
+        }
+
+        // Other functions like `addTask`, `updateTaskCount`, `updateChart`, etc.
+
+        let chart; // Declare a variable to hold the chart instance
+
+function initializeChart() {
+    const ctx = document.getElementById('chart').getContext('2d');
+    chart = new Chart(ctx, {
+        type: 'bar', // You can change this to 'line', 'pie', etc.
+        data: {
+            labels: Object.keys(taskCounts), // Months
+            datasets: [{
+                label: 'Completed Tasks',
+                data: Object.values(taskCounts).map(count => count.completed), // Completed tasks for each month
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+function updateChart() {
+    // Update the chart data
+    chart.data.datasets[0].data = Object.values(taskCounts).map(count => count.completed);
+    chart.update(); // Redraw the chart
+}
+
+// Call the initializeChart function after generating the months
+generateMonths();
+initializeChart();
+    </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ludiflex | Login</title>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        /* POPPINS FONT */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: url("https://images.pexels.com/photos/189349/pexels-photo-189349.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            overflow: hidden;
+        }
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: rgba(39, 39, 39, 0.6);
+        }
+        /* Navbar */
+        .nav {
+            position: fixed;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 50px;
+            height: 80px;
+            line-height: 80px;
+            background: linear-gradient(rgba(39,39,39, 0.8), transparent);
+            z-index: 100;
+        }
+        .nav-logo p {
+            color: white;
+            font-size: 25px;
+            font-weight: 600;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #f0f0f0;
+        }
+        /* Form Container */
+        .form-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+        }
+        header {
+            text-align: center;
+            color: #fff;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .input-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            padding-left: 40px;
+            border-radius: 25px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+        }
+        .input-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+        .submit {
+            width: 100%;
+            height: 40px;
+            background: #fff;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+        .submit:hover {
+            background: #ddd;
+        }
+        .forgot-password a {
+            color: #fff;
+            font-size: small;
+            text-decoration: none;
+            display: block;
+            text-align: right;
+        }
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-logo"><p>LOGO.</p></div>
+        <div class="nav-links">
+            <a href="prog.html">Sign In</a>
+            <a href="signup.html">Sign Up</a>
+        </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="form-box">
+        <header> Login</header>
+        <form id="loginForm" action="prog.html" method="get">
+            <div class="input-box">
+                <i class="bx bx-user"></i>
+                <input type="text" id="username" name="username" class="input-field" placeholder="Username or Email" required>
+            </div>
+            <div class="input-box">
+                <i class="bx bx-lock-alt"></i>
+                <input type="password" id="password" name="password" class="input-field" placeholder="Password" required>
+            </div>
+            <div class="forgot-password">
+                <a href="forgot-password.html">Forgot Password?</a>
+            </div>
+            <div>
+                <input type="submit" class="submit" value="Sign In">
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        const email = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Validate email contains 'gmail.com'
+        if (!email.includes('gmail.com')) {
+            alert('Email must contain "gmail.com"');
+            event.preventDefault();
+            return;
+        }
+
+        // Validate password is at least 8 characters
+        if (password.length < 8) {
+            alert('Password must be at least 8 characters long');
+            event.preventDefault();
+            return;
+        }
+    });
+</script>
+</body>
+</html>

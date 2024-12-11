@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Habit Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            padding: 20px;
+            max-width: 1200px; /* Set a max width for the container */
+            margin: auto; /* Center the container */
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .habits-section {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .day-card {
+            background: #333;
+            border-radius: 8px;
+            padding: 15px;
+            width: 13%;
+            box-sizing: border-box;
+        }
+        .day-card h3 {
+            margin: 0 0 10px;
+            text-align: center;
+        }
+        .day-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .day-card ul li {
+            margin-bottom: 5px;
+        }
+        .day-card input[type="text"] {
+            width: calc(100% - 10px);
+            margin-top: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: none;
+        }
+        .day-card button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #555;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .day-card button:hover {
+            background-color: #777;
+        }
+        .chart-container {
+            margin: 30px 0;
+            background: #444;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            max-width: 800px; /* Set a max width for the chart container */
+            margin-left: auto; /* Center the chart container */
+            margin-right: auto; /* Center the chart container */
+        }
+        #chart {
+            width: 100%;
+            height: 200px; /* Set a fixed height for the chart */
+        }
+        .analysis-container {
+            margin-top: 30px;
+            background: #444; /* Same background as the chart */
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
+        }
+        #analysis-table {
+            width: 100%; /* Make the table take full width */
+            border-collapse: collapse; /* Collapse borders */
+            margin: auto; /* Center the table */
+        }
+        #analysis-table th, #analysis-table td {
+            padding: 10px; /* Add padding for cells */
+            text-align: center; /* Center the text */
+            border: 1px solid #555; /* Add border to cells */
+        }
+        #analysis-table th {
+            background-color: #555; /* Header background color */
+            color: #fff; /* Header text color */
+        }
+        #analysis-table td {
+            background-color: #333; /* Cell background color */
+            color: #fff; /* Cell text color */
+        }
+        .redirect-button {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.redirect-button:hover {
+    background-color: #cad7e5;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Weekly Habit Tracker</h1>
+            <button class="redirect-button" onclick="window.location.href='program.html';">Go to Another Page</button>
+        </div>
+        
+
+        <!-- Weekly Habits Section -->
+        <div class="habits-section">
+            <!-- Day Card Template -->
+            <div class="day-card" id="monday">
+                <h3>Monday</h3>
+                <ul id="monday-tasks"></ul>
+                <input type="text" id="monday-input" placeholder="Add a task">
+                <button onclick="addTask('monday')">Add Task</button>
+            </div>
+            <div class="day-card" id="tuesday">
+                <h3>Tuesday</h3>
+                <ul id="tuesday-tasks"></ul>
+                <input type="text" id="tuesday-input" placeholder="Add a task">
+                <button onclick="addTask('tuesday')">Add Task </button>
+            </div>
+            <div class="day-card" id="wednesday">
+                <h3>Wednesday</h3>
+                <ul id="wednesday-tasks"></ul>
+                <input type="text" id="wednesday-input" placeholder="Add a task">
+                <button onclick="addTask('wednesday')">Add Task</button>
+            </div>
+            <div class="day-card" id="thursday">
+                <h3>Thursday</h3>
+                <ul id="thursday-tasks"></ul>
+                <input type="text" id="thursday-input" placeholder="Add a task">
+                <button onclick="addTask('thursday')">Add Task</button>
+            </div>
+            <div class="day-card" id="friday">
+                <h3>Friday</h3>
+                <ul id="friday-tasks"></ul>
+                <input type="text" id="friday-input" placeholder="Add a task">
+                <button onclick="addTask('friday')">Add Task</button>
+            </div>
+            <div class="day-card" id="saturday">
+                <h3>Saturday</h3>
+                <ul id="saturday-tasks"></ul>
+                <input type="text" id="saturday-input" placeholder="Add a task">
+                <button onclick="addTask('saturday')">Add Task</button>
+            </div>
+            <div class="day-card" id="sunday">
+                <h3>Sunday</h3>
+                <ul id="sunday-tasks"></ul>
+                <input type="text" id="sunday-input" placeholder="Add a task">
+                <button onclick="addTask('sunday')">Add Task</button>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="chart-container">
+            <h3>Habits Tracker Monthly View</h3>
+            <canvas id="chart"></canvas>
+        </div>
+
+        <!-- Analysis Section -->
+        <div class="analysis-container">
+            <h3>Task Analysis</h3>
+            <table id="analysis-table">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Total Tasks</th>
+                        <th>Completed Tasks</th>
+                        <th>Completion Rate (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="analysis"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize task completion counts and total tasks
+        const taskCounts = {
+            monday: { completed: 0, total: 0 },
+            tuesday: { completed: 0, total: 0 },
+            wednesday: { completed: 0, total: 0 },
+            thursday: { completed: 0, total: 0 },
+            friday: { completed: 0, total: 0 },
+            saturday: { completed: 0, total: 0 },
+            sunday: { completed: 0, total: 0 }
+        };
+
+        // Function to dynamically add tasks
+        function addTask(day) {
+            const input = document.getElementById(`${day}-input`);
+            const taskList = document.getElementById(`${day}-tasks`);
+
+            if (input.value.trim()) {
+                const li = document.createElement("li");
+                li.innerHTML = `<input type="checkbox" onchange="updateTaskCount('${day}')"> ${input.value}`;
+                taskList.appendChild(li);
+                input.value = "";
+
+                // Increment total tasks for the day
+                taskCounts[day].total++;
+                updateAnalysis();
+            }
+        }
+
+        // Function to update task count and chart for daily tasks
+        function updateTaskCount(day) {
+            const taskList = document.getElementById(`${day}-tasks`);
+            const checkboxes = taskList.getElementsByTagName("input");
+            let completedCount = 0;
+
+            for (let checkbox of checkboxes) {
+                if (checkbox.checked) {
+                    completedCount++;
+                }
+            }
+
+            taskCounts[day].completed = completedCount;
+            updateChart();
+            updateAnalysis();
+        }
+
+        // Function to update the analysis section
+        function updateAnalysis() {
+            const analysisDiv = document.getElementById('analysis');
+            analysisDiv.innerHTML = ''; // Clear previous analysis
+
+            for (const [day, counts] of Object.entries(taskCounts)) {
+                const percentage = counts.total > 0 ? (counts.completed / counts.total * 100).toFixed(2) : 0;
+                analysisDiv.innerHTML += `
+                    <tr>
+                        <td>${day.charAt(0).toUpperCase() + day.slice(1)}</td>
+                        <td>${counts.total}</td>
+                        <td>${counts.completed}</td>
+                        <td>${percentage}</td>
+                    </tr>
+                `;
+            }
+        }
+
+        // Chart.js for Monthly Progress
+        const ctx = document.getElementById('chart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                datasets: [{
+                    label: 'Tasks Completed',
+                    data: Object.values(taskCounts).map(count => count.completed),
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { grid: { color: '#555' } },
+                    y: { beginAtZero: true, grid: { color: '#555' } }
+                }
+            }
+        });
+
+        // Function to update the chart with the latest task counts
+        function updateChart() {
+            chart.data.datasets[0].data = Object.values(taskCounts).map(count => count.completed);
+            chart.update();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <style>
+        body {
+            background-image: url('your-image-url.jpg'); /* Add the URL of your background image here */
+            background-size: cover;  /* Makes the image cover the entire background */
+            background-position: center; /* Ensures the image is centered */
+            background-attachment: fixed; /* Makes the background image fixed when scrolling */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .welcome-message {
+            font-size: 3rem;
+            color: #4A90E2;
+            opacity: 0;
+            animation: fadeIn 3s ease-in-out forwards;
+        }
+
+        .get-started-btn {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeIn 2s 3s ease-in-out forwards;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .get-started-btn:hover {
+            background-color: #45a049;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-message">Welcome to Our Platform!</div>
+    <!-- Redirects to 'login.html' -->
+    <button class="get-started-btn" onclick="window.location.href='login.html'">Get Started</button>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task History</title>
+    <style>
+        /* General Styles for history page */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 20px 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            width: 420px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #4a90e2;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: left;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li.completed {
+            background-color: #d4edda; /* Greenish background for completed tasks */
+        }
+
+        .task-info {
+            display: inline-block;
+        }
+
+        .completed-icon {
+            color: #28a745;
+            font-size: 1.5rem;
+            margin-left: 10px;
+        }
+
+        button {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Task History</h1>
+        <ul id="task-history"></ul>
+        <button onclick="clearHistory()">Clear History</button>
+    </div>
+
+    <script>
+        // Fetch tasks from localStorage
+        const taskHistoryList = document.getElementById("task-history");
+
+        let tasks = JSON.parse(localStorage.getItem("tasks")) || {};
+
+        // Function to format date (day, month, year)
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = date.getDate();
+            const month = date.toLocaleString('default', { month: 'long' });
+            const year = date.getFullYear();
+            return `${day} ${month} ${year}`;
+        }
+
+        // Function to update task history and display tasks
+        function updateTaskHistory() {
+            taskHistoryList.innerHTML = ""; // Clear the task history list first
+
+            for (const [key, task] of Object.entries(tasks)) {
+                const li = document.createElement("li");
+                const taskDate = formatDate(key);
+
+                // Add task info (name, category, priority)
+                const taskInfo = document.createElement("div");
+                taskInfo.classList.add("task-info");
+                taskInfo.innerHTML = `
+                    <strong>${task.name}</strong><br>
+                    <span>${task.category} - ${task.priority}</span><br>
+                    <small>Scheduled: ${taskDate}</small>
+                `;
+
+                // Add the green tick for completed tasks
+                const completedIcon = task.completed ? "&#10003;" : ""; // Green tick mark for completed tasks
+                if (task.completed) {
+                    li.classList.add("completed");
+                }
+
+                const iconDiv = document.createElement("div");
+                iconDiv.innerHTML = `
+                    <span class="completed-icon">${completedIcon}</span>
+                `;
+
+                // Append task info and icon to the list item
+                li.appendChild(taskInfo);
+                li.appendChild(iconDiv);
+
+                // Append the list item to the history
+                taskHistoryList.appendChild(li);
+            }
+        }
+
+        // Function to clear task history (from localStorage)
+        function clearHistory() {
+            tasks = {}; // Clear tasks object
+            localStorage.removeItem("tasks"); // Remove tasks from localStorage
+            updateTaskHistory(); // Refresh the task list on the page
+            alert("Task history has been cleared!");
+        }
+
+        // Call the function to update the task history on page load
+        updateTaskHistory();
+    </script>
+</body>
+</html>
